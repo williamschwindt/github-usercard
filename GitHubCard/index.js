@@ -3,6 +3,17 @@
            https://api.github.com/users/<your name>
 */
 
+axios
+  .get('https://api.github.com/users/williamschwindt')
+
+  .then((res) => {
+    cards.appendChild(createCard(res));
+  })
+
+  .catch((err) => {
+    console.log(err);
+  })
+
 /* Step 2: Inspect and study the data coming back, this is YOUR 
    github info! You will need to understand the structure of this 
    data in order to use it to build your component function 
@@ -45,11 +56,70 @@ const followersArray = [];
 </div>
 
 */
+let cards = document.querySelector('.cards');
 
-/* List of LS Instructors Github username's: 
-  tetondan
-  dustinmyers
-  justsml
-  luishrd
-  bigknell
-*/
+function createCard(obj) {
+  let card = document.createElement('div');
+  card.classList.add('card');
+
+  let img = document.createElement('img');
+  img.src = obj.data.avatar_url;
+
+  let cardInfo = document.createElement('div');
+  cardInfo.classList.add('card-info');
+
+  let name = document.createElement('h3');
+  name.classList.add('name');
+  name.textContent = obj.data.name;
+
+  let userName = document.createElement('p');
+  userName.classList.add('username');
+  userName.textContent = obj.data.login;
+
+  let location = document.createElement('p');
+  location.textContent = obj.data.location;
+
+  let profile = document.createElement('p');
+
+  let link = document.createElement('a');
+  link.href = obj.data.html_url;
+  link.textContent = obj.data.html_url;
+
+  let followers = document.createElement('p');
+  followers.textContent = obj.data.followers;
+
+  let following = document.createElement('p');
+  following.textContent = obj.data.following;
+
+  let bio = document.createElement('p');
+  bio.textContent = obj.data.bio;
+
+
+  card.appendChild(img);
+  card.appendChild(cardInfo);
+  cardInfo.appendChild(name);
+  cardInfo.appendChild(userName);
+  cardInfo.appendChild(location);
+  cardInfo.appendChild(profile);
+  profile.appendChild(link);
+  cardInfo.appendChild(followers);
+  cardInfo.appendChild(following);
+  cardInfo.appendChild(bio);
+
+  return card;
+}
+
+let follwersArr = ['tlewandowski18', 'HeyMichelle', 'rachellsincere', 'mtrew2015', 'CJStryker'];
+
+follwersArr.forEach((person) => {
+  axios
+  .get('https://api.github.com/users/' + person)
+
+  .then((res) => {
+    cards.appendChild(createCard(res));
+  })
+
+  .catch((err) => {
+    console.log(err);
+  })
+})
